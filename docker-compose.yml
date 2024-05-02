@@ -1,0 +1,41 @@
+version: '3'
+services:
+  api_server:
+    container_name:  battle_field_game_api-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql_server
+    restart: unless-stopped
+    env_file:
+      - development.env
+    environment:
+      TZ: "Asia/Tokyo"
+      DATABASE_HOST: mysql_server
+    networks:
+      - api_network
+  mysql_server:
+    container_name: battle_field_game_api-mysql
+    image: mysql:8.0.37
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    env_file:
+      - development.env
+    environment:
+      TZ: "Asia/Tokyo"
+    networks:
+      - api_network
+volumes:
+  mysql_volume:
+networks:
+  api_network:
