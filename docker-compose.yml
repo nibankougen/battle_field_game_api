@@ -11,7 +11,8 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - mysql_server
+      mysql_server:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       TZ: "Asia/Tokyo"
@@ -31,6 +32,10 @@ services:
       TZ: "Asia/Tokyo"
     networks:
       - api_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 10s
+      retries: 10
 volumes:
   mysql_volume:
 networks:
