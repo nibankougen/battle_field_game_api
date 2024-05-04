@@ -16,7 +16,7 @@ default: &default
   username: root
   password: <%= ENV.fetch("MYSQL_ROOT_PASSWORD") %>
   host: <%= ENV.fetch("DATABASE_HOST") %>
-  ssl_mode: :disabled
+  ssl_mode: disabled
   sslverify: false
 
 development:
