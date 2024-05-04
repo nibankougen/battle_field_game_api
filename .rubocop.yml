@@ -1,0 +1,38 @@
+# Default settings: https://github.com/rubocop/rubocop/blob/master/config/default.yml
+AllCops:
+  Exclude:
+    - 'Schemafile'
+    - 'bin/**/*'
+    - 'tmp/**/*'
+    - 'node_modules/**/*'
+  NewCops: enable
+  TargetRubyVersion: 3.2
+
+Layout/LineLength:
+  Max: 150
+
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/BlockLength:
+  CountComments: false
+  Exclude:
+    - 'config/routes.rb'
+    - 'spec/**/*'
+
+Metrics/ClassLength:
+  CountComments: false
+
+Metrics/MethodLength:
+  CountComments: false
+
+Metrics/ModuleLength:
+  CountComments: false
+
+# 日本語コメントを許可
+Style/AsciiComments:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
