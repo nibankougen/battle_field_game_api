@@ -11,10 +11,9 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - mysql_server
+      mysql_server:
+        condition: service_healthy
     restart: unless-stopped
-    env_file:
-      - development.env
     environment:
       TZ: "Asia/Tokyo"
       DATABASE_HOST: mysql_server
@@ -29,12 +28,14 @@ services:
     ports:
       - 3306:3306
     restart: unless-stopped
-    env_file:
-      - development.env
     environment:
       TZ: "Asia/Tokyo"
     networks:
       - api_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 10s
+      retries: 10
 volumes:
   mysql_volume:
 networks:
