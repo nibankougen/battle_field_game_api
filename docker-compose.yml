@@ -17,6 +17,7 @@ services:
     environment:
       TZ: "Asia/Tokyo"
       DATABASE_HOST: mysql_server
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     networks:
       - api_network
   mysql_server:
@@ -30,6 +31,7 @@ services:
     restart: unless-stopped
     environment:
       TZ: "Asia/Tokyo"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     networks:
       - api_network
     healthcheck:

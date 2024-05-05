@@ -1,0 +1,27 @@
+name: API Test and Linter CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          docker compose up -d --build
+          while ! docker compose exec mysql_server mysqladmin --user=root --password=${{ secrets.MYSQL_ROOT_PASSWORD }} --host "mysql_server" ping --silent &> /dev/null; do
+            sleep 1
+          done
+          docker compose exec api_server bundle exec rails db:create
+          docker compose exec -e RAILS_ENV=test api_server bundle exec ridgepole --config ./config/database.yml --apply
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
+      - name: Run RuboCop linter
+        run: docker compose exec -e RAILS_ENV=test api_server bundle exec rubocop
